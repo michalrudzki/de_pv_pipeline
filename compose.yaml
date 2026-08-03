@@ -1,0 +1,12 @@
+name: de_pv_data
+
+services:
+  python_scrap:
+    image: python:3.12.10
+    working_dir: /app
+    volumes:
+      - .:/app/
+
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+            python main.py"
