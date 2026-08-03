@@ -3,7 +3,14 @@ from bs4 import BeautifulSoup
 import requests
 import json
 
-page_url =  'https://pvmonitor.pl/inst_sumaax.php?i=0&id=14644&rodz=1&od=2026-08-02&do=2026-08-02#/sumapv' #'https://miroslawmamczur.pl/'
+import datetime
+now = datetime.datetime.now() - datetime.timedelta(days=1)
+
+#print('{}-{}-{}'.format(now.year,now.month, now.day))
+#print (now.strftime("%H:%M:%S"))
+_date = now.strftime("%Y-%m-%d")
+
+page_url =  f'https://pvmonitor.pl/inst_sumaax.php?i=0&id=14644&rodz=1&od={_date}&do={_date}#/sumapv' #'https://miroslawmamczur.pl/'
 page = requests.get(page_url)
 soup = BeautifulSoup(page.content, 'html.parser')  # note: bs4 can use lxml under the hood which makes it really fast!
  
@@ -22,10 +29,10 @@ for value, mesure in zip(soup.find_all("div", class_="count green")[:5], soup.fi
     dict_mesurements[mesure.text]=value.text
 
 # Directly from the dictionary
-with open('json_data.json', 'w') as outfile:
+with open('data/json_data.json', 'w') as outfile:
     json.dump(dict_mesurements, outfile)
 
-with open('json_data.json', 'r') as json_file:
+with open('data/json_data.json', 'r') as json_file:
     data = json.load(json_file)
 
 print(data)
