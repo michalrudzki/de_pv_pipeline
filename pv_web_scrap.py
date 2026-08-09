@@ -1,3 +1,4 @@
+#runs on python 3.10.12 from pyenv
 #from lib import packages
 from bs4 import BeautifulSoup
 import requests
@@ -7,7 +8,7 @@ from random import randint
 from time import sleep
 
 now = datetime.datetime.now() - datetime.timedelta(days=1)
-_date = now.strftime("%Y-%m-%d")
+file_date = now.strftime("%Y-%m-%d")
 
 list_of_users=[]
 with open("data/list_of_users.csv", newline='') as myFile:
@@ -36,7 +37,7 @@ for user in list_of_users:
 
     col_names = list(dict_mesurements.keys())
     
-    with open(f'data/pv_production{_date}.csv', 'a', newline='') as csvfile:
+    with open(f'data/pv_production{file_date}.csv', 'a', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=col_names)
         if i == 0:
             writer.writeheader()
