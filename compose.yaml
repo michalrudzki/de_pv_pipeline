@@ -1,14 +1,38 @@
 name: de_pv_data
 
 services:
-  python_scrap:
+
+  postgres18:
+    image: postgres:18
+    container_name: postgres18
+    environment:
+      POSTGRES_PASSWORD: mysecret
+    ports:
+      - "5432:5432"
+    volumes:
+      - vol_postgres_data:/var/lib/postgresql/18/docker
+    deploy:
+      resources:
+        limits:
+          cpus: 2.0
+          memory: 1G
+        reservations:
+          cpus: 1.0
+          memory: 256MB
+
+  python-scrap:
     image: python:3.12.10
     working_dir: /app
     volumes:
       - .:/app/
 
+  # python weather_api.py &&
   # python pv_web_scrap.py
     command: >
       sh -c "pip install --no-cache-dir -r requirements.txt &&
-            python weather_api.py &&
-            pv_web_scrap.py"
+            python check_connection.py >> /app/cc.txt"
+
+volumes:
+  vol_postgres_data:
+    name: vol_postgres_data
+    driver: local

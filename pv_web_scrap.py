@@ -23,7 +23,7 @@ with open("data/list_of_users.csv", newline='') as myFile:
 i=0
 for user in list_of_users:
     id=user[0]
-    page_url =  f'https://pvmonitor.pl/inst_sumaax.php?i=0&id={id}&rodz=1&od={_date}&do={_date}#/sumapv' 
+    page_url =  f'https://pvmonitor.pl/inst_sumaax.php?i=0&id={id}&rodz=1&od={file_date}&do={file_date}#/sumapv' 
     print(page_url)
 
     sleep(randint(1,3)) # sleep random time
