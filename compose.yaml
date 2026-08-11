@@ -26,11 +26,13 @@ services:
     volumes:
       - .:/app/
 
+  # &&
   # python weather_api.py &&
   # python pv_web_scrap.py
+  # && python check_connection.py >> /app/cc.txt
+
     command: >
-      sh -c "pip install --no-cache-dir -r requirements.txt &&
-            python check_connection.py >> /app/cc.txt"
+      sh -c "pip install --no-cache-dir -r requirements.txt "
 
 volumes:
   vol_postgres_data:

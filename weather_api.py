@@ -25,6 +25,7 @@ params_Warszawa = {
 	"daily": ["sunrise", "sunset", "daylight_duration", "sunshine_duration", "weather_code", "uv_index_max", "uv_index_clear_sky_max", "rain_sum", "showers_sum", "snowfall_sum", "precipitation_sum", "precipitation_hours"],
 	"hourly": ["cloud_cover", "cloud_cover_low", "cloud_cover_mid", "cloud_cover_high", "visibility", "temperature_2m", "relative_humidity_2m", "dew_point_2m", "rain", "showers", "snowfall", "weather_code"],
 	"timezone": "Europe/Berlin",
+    "forecast_days": 3,
 }
 params_Krakow = {
 	"latitude": 50.06,
@@ -32,6 +33,7 @@ params_Krakow = {
 	"daily": ["sunrise", "sunset", "daylight_duration", "sunshine_duration", "weather_code", "uv_index_max", "uv_index_clear_sky_max", "rain_sum", "showers_sum", "snowfall_sum", "precipitation_sum", "precipitation_hours"],
 	"hourly": ["cloud_cover", "cloud_cover_low", "cloud_cover_mid", "cloud_cover_high", "visibility", "temperature_2m", "relative_humidity_2m", "dew_point_2m", "rain", "showers", "snowfall", "weather_code"],
 	"timezone": "Europe/Berlin",
+    "forecast_days": 3,
 }
 params_Szczecin = {
 	"latitude": 53.43,
@@ -39,6 +41,7 @@ params_Szczecin = {
 	"daily": ["sunrise", "sunset", "daylight_duration", "sunshine_duration", "weather_code", "uv_index_max", "uv_index_clear_sky_max", "rain_sum", "showers_sum", "snowfall_sum", "precipitation_sum", "precipitation_hours"],
 	"hourly": ["cloud_cover", "cloud_cover_low", "cloud_cover_mid", "cloud_cover_high", "visibility", "temperature_2m", "relative_humidity_2m", "dew_point_2m", "rain", "showers", "snowfall", "weather_code"],
 	"timezone": "Europe/Berlin",
+    "forecast_days": 3,
 }
 
 def get_meteo(params, city):
