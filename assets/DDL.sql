@@ -20,6 +20,7 @@ eff_date TIMESTAMP
 );
 
 create table public.meteo_forcast_hourly (
+file_date TIMESTAMP,
 city VARCHAR(50),
 forecst_datetime TIMESTAMP,
 cloud_cover DECIMAL(10,2),
@@ -37,10 +38,11 @@ weather_code DECIMAL(10,2)
 );
 
 create table public.meteo_forcast_daily (
+file_date TIMESTAMP,
 city VARCHAR(50),
 forecst_datetime TIMESTAMP,
-sunrise TIMESTAMP,
-sunset TIMESTAMP,
+sunrise INT,
+sunset INT,
 daylight_duration DECIMAL(16,8),
 sunshine_duration DECIMAL(16,8), 
 weather_code DECIMAL(10,2), 
@@ -53,4 +55,10 @@ precipitation_sum DECIMAL(10,2),
 precipitation_hours DECIMAL(10,2)
 );
 
+
+SELECT *
+  FROM information_schema.tables
+-- WHERE table_schema='public'
+--   AND table_type='BASE TABLE'
+;
 
