@@ -7,8 +7,9 @@ from datetime import datetime
 from sqlalchemy import create_engine, MetaData, Table, Delete
 from sqlalchemy.engine.url import URL
 from sqlalchemy import text 
+from os import walk
 
-file_date = '2026-08-10'
+file_date = '2026-08-11'
 insert_date = datetime.fromisoformat(f'{file_date} 00:00:00.0')
 
 conn_params: dict[str, str | int] = {
@@ -64,7 +65,7 @@ def fastInsert_PV(data_l, file_date):
 # Load PV data
 def get_pv_data_from_csv(file_date):
     pv_data_l=list()
-    with open(f'data/pv_production{file_date}.csv', mode='r') as infile:
+    with open(f'data/pv/pv_production{file_date}.csv', mode='r') as infile:
         reader = csv.reader(infile)
         keys=[]
         
@@ -78,50 +79,15 @@ def get_pv_data_from_csv(file_date):
             pv_data_l.append(row_dict)
     return pv_data_l
 
-data_l= get_pv_data_from_csv(file_date)
 
-fastInsert_PV(data_l, file_date)
 
-# Load Meteo
-config = dict(
-    drivername='postgresql',
-    username='postgres',
-    password='mysecret',
-    host='localhost',
-    port='5432',
-    database='postgres'
-)
+filenames = next(walk('data/pv/'), (None, None, []))[2] 
+print(filenames)
+a = list(map(lambda x: x.split('pv_production')[1].split('.')[0],  filenames))
 
-url = URL.create(**config)
-print(url)
-engine = create_engine(url, echo=True)
+for a in a:
+    print(a)
 
-def insert_meteo(table_type, meteo_city, file_date):
-    insert_date = datetime.fromisoformat(f'{file_date} 00:00:00.0')
-    meteo_data = pd.read_pickle(f"data/meteo_{table_type}_{meteo_city}_{file_date}.pkl")
-    meteo_data['city'] = meteo_city
-    meteo_data['file_date'] = pd.Timestamp(file_date)
-    meteo_data.rename(columns={'date': 'forecst_datetime'}, inplace=True)
-    table_name = f'meteo_forcast_{table_type}'
+#data_l= get_pv_data_from_csv(file_date)
+#fastInsert_PV(data_l, file_date)
 
-    delete_sql = """
-        DELETE FROM meteo_forcast_{}
-        WHERE file_date = :file_date and city = :meteo_city
-    """.format(table_type)
- 
-    with engine.connect() as con:
-        result = con.execute(
-            text(delete_sql),
-            {"file_date": insert_date, "meteo_city": meteo_city}
-        )
-
-        con.commit()
-
-    meteo_data.to_sql(table_name, engine, if_exists="append", index=False)
-
-insert_meteo('daily', 'Szczecin', file_date)
-insert_meteo('daily', 'Warszawa', file_date)
-insert_meteo('daily', 'Krakow', file_date)
-insert_meteo('hourly', 'Szczecin', file_date)
-insert_meteo('hourly', 'Warszawa', file_date)
-insert_meteo('hourly', 'Krakow', file_date)
