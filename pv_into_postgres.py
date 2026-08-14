@@ -9,8 +9,8 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy import text 
 from os import walk
 
-file_date = '2026-08-11'
-insert_date = datetime.fromisoformat(f'{file_date} 00:00:00.0')
+#file_date = '2026-08-11'
+#insert_date = datetime.fromisoformat(f'{file_date} 00:00:00.0')
 
 conn_params: dict[str, str | int] = {
     "host": "localhost",
@@ -79,15 +79,27 @@ def get_pv_data_from_csv(file_date):
             pv_data_l.append(row_dict)
     return pv_data_l
 
-
-
+# List dates to be loaded
 filenames = next(walk('data/pv/'), (None, None, []))[2] 
-print(filenames)
-a = list(map(lambda x: x.split('pv_production')[1].split('.')[0],  filenames))
+dates_to_load = list(map(lambda x: x.split('pv_production')[1].split('.')[0],  filenames))
 
-for a in a:
-    print(a)
+loaded_dates=[]
+with open("data/loaded_pv.csv", newline='') as myFile:
+    csvReader = csv.reader(myFile)
+    
+    # Loop through each row in the CSV file
+    for row in csvReader:
+        loaded_dates.append(row[0]) 
 
-#data_l= get_pv_data_from_csv(file_date)
-#fastInsert_PV(data_l, file_date)
+dates_to_load = [x for x in dates_to_load if x not in loaded_dates]
 
+for file_date in dates_to_load:
+    insert_date = datetime.fromisoformat(f'{file_date} 00:00:00.0')
+
+    data_l= get_pv_data_from_csv(file_date)
+    fastInsert_PV(data_l, file_date)
+    print(file_date)
+
+    with open("data/loaded_pv.csv", 'a') as csvfile:
+        csvfile.write('\n')
+        csvfile.write(file_date)
