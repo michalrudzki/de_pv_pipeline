@@ -13,7 +13,7 @@ from os import walk
 #insert_date = datetime.fromisoformat(f'{file_date} 00:00:00.0')
 
 conn_params: dict[str, str | int] = {
-    "host": "localhost",
+    "host": "postgres18",
     "port": 5432,
     "dbname": "postgres",
     "user": "postgres",
@@ -81,6 +81,7 @@ def get_pv_data_from_csv(file_date):
 
 # List dates to be loaded
 filenames = next(walk('data/pv/'), (None, None, []))[2] 
+filenames = [x for x in filenames if not x.startswith('.') and len(x) > 0]
 dates_to_load = list(map(lambda x: x.split('pv_production')[1].split('.')[0],  filenames))
 
 loaded_dates=[]

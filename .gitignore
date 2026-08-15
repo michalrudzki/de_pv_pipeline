@@ -2,3 +2,4 @@
 meteo_*.pkl
 cc.txt
 data/*
+.cache.sqlite

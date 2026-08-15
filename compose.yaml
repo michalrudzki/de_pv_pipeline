@@ -20,19 +20,57 @@ services:
           cpus: 1.0
           memory: 256MB
 
-  python-scrap:
+  python-scrap-pv:
     image: python:3.12.10
     working_dir: /app
     volumes:
       - .:/app/
 
-  # &&
-  # python weather_api.py &&
-  # python pv_web_scrap.py
-  # && python check_connection.py >> /app/cc.txt
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+      python pv_web_scrap.py
+
+  python-get-meteo:
+    image: python:3.12.10
+    working_dir: /app
+    volumes:
+      - .:/app/
 
     command: >
-      sh -c "pip install --no-cache-dir -r requirements.txt "
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+      python meteo_get.py"
+
+  python-insert-pv:
+    image: python:3.12.10
+    working_dir: /app
+    volumes:
+      - .:/app/
+    links:
+      - postgres18
+    depends_on:
+      postgres18:
+        condition: service_started
+      python-scrap-pv:
+        condition: service_completed_successfully
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+      python pv_into_postgres.py"
+
+  python-insert-meteo:
+    image: python:3.12.10
+    working_dir: /app
+    volumes:
+      - .:/app/
+    links:
+      - postgres18
+    depends_on:
+      postgres18:
+        condition: service_started
+      python-get-meteo:
+        condition: service_completed_successfully
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+      python meteo_into_postgres.py"
 
 volumes:
   vol_postgres_data:

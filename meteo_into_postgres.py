@@ -16,7 +16,7 @@ config = dict(
     drivername='postgresql',
     username='postgres',
     password='mysecret',
-    host='localhost',
+    host='postgres18',
     port='5432',
     database='postgres'
 )
@@ -63,8 +63,7 @@ with open("data/loaded_meteo.csv", newline='') as myFile:
     for row in csvReader:
         loaded_dates.append(row[0]) 
 
-dates_to_load = {x for x in dates_to_load if x not in loaded_dates}
-print(dates_to_load)
+dates_to_load = {x for x in dates_to_load if x not in loaded_dates and len(x) > 0}
 
 for file_date in dates_to_load:
     insert_date = datetime.fromisoformat(f'{file_date} 00:00:00.0')

@@ -47,7 +47,7 @@ params_Szczecin = {
 def get_meteo(params, city):
     # Verify if file already exist
     current_directory = os.getcwd()
-    file_path = '{}/data/meteo/meteo_daily_{}_{}.pkl'.format(current_directory,city,file_date)
+    file_path = '{}/data/meteo/daily/meteo_daily_{}_{}.pkl'.format(current_directory,city,file_date)
 
     # Check if the file exists
     if os.path.exists(file_path):
@@ -102,7 +102,7 @@ def get_meteo(params, city):
         hourly_dataframe = pd.DataFrame(data = hourly_data)
         #print("\nHourly data\n", hourly_dataframe)
 
-        with open(f"data/meteo/meteo_hourly_{city}_{file_date}.pkl", 'wb') as f:
+        with open(f"data/meteo/hourly/meteo_hourly_{city}_{file_date}.pkl", 'wb') as f:
             pickle.dump(hourly_dataframe, f)
 
         # Process daily data. The order of variables needs to be the same as requested.

@@ -62,3 +62,4 @@ SELECT *
 --   AND table_type='BASE TABLE'
 ;
 
+select 5::NUMERIC/2::NUMERIC;
