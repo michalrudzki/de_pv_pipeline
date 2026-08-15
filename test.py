@@ -1,5 +1,9 @@
+import assets.check_connection as cc
+
+'''
 import pickle
 import pandas as pd
+
 
 objects = []
 with (open("data/meteo_daily_Szczecin_2026-08-09.pkl", "rb")) as openfile:
@@ -12,3 +16,7 @@ with (open("data/meteo_daily_Szczecin_2026-08-09.pkl", "rb")) as openfile:
 print(objects[0].columns.tolist())
 pd.set_option('display.max_columns', None)
 print(objects[0].head(1))
+'''
+
+cc.runTests(1000)
+

@@ -132,4 +132,4 @@ def runTests(iterations):
     with timer('fast'):
         tester.fastInsert()
 
-runTests(1000)
+#runTests(1000)

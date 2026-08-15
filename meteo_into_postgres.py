@@ -31,10 +31,10 @@ def insert_meteo(table_type, meteo_city, file_date):
     meteo_data['city'] = meteo_city
     meteo_data['file_date'] = pd.Timestamp(file_date)
     meteo_data.rename(columns={'date': 'forecst_datetime'}, inplace=True)
-    table_name = f'meteo_forcast_{table_type}'
+    table_name = f'bronze_meteo_forcast_{table_type}'
 
     delete_sql = """
-        DELETE FROM meteo_forcast_{}
+        DELETE FROM bronze_meteo_forcast_{}
         WHERE file_date = :file_date and city = :meteo_city
     """.format(table_type)
  

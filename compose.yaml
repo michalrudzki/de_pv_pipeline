@@ -28,7 +28,7 @@ services:
 
     command: >
       sh -c "pip install --no-cache-dir -r requirements.txt &&
-      python pv_web_scrap.py
+      python pv_web_scrap.py"
 
   python-get-meteo:
     image: python:3.12.10

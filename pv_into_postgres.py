@@ -9,9 +9,6 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy import text 
 from os import walk
 
-#file_date = '2026-08-11'
-#insert_date = datetime.fromisoformat(f'{file_date} 00:00:00.0')
-
 conn_params: dict[str, str | int] = {
     "host": "postgres18",
     "port": 5432,
@@ -35,14 +32,14 @@ def fastInsert_PV(data_l, file_date):
     '''
     insert_date = datetime.fromisoformat(f'{file_date} 00:00:00.0')
     cleanup_sql = """
-        delete from pv_production
+        delete from bronze_pv_production
         where eff_date = %(insert_date)s
     """
 
     execute(cleanup_sql, locals())
 
     sql='''
-        INSERT INTO pv_production(id_inst,current_power_W,daily_kWh,monthly_kWh,yearly_kWh,Total_MWh,eff_date)
+        INSERT INTO bronze_pv_production(id_inst,current_power_W,daily_kWh,monthly_kWh,yearly_kWh,Total_MWh,eff_date)
             SELECT unnest( %(id_inst)s ) ,
                     unnest( %(current_power_W)s),
                     unnest( %(daily_kWh)s),
