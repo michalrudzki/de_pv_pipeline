@@ -72,6 +72,24 @@ services:
       sh -c "pip install --no-cache-dir -r requirements.txt &&
       python meteo_into_postgres.py"
 
+  python-bronze-silver:
+    image: python:3.12.10
+    working_dir: /app
+    volumes:
+      - .:/app/
+    links:
+      - postgres18
+    depends_on:
+      postgres18:
+        condition: service_started
+      python-insert-meteo:
+        condition: service_completed_successfully
+      python-insert-pv:
+        condition: service_completed_successfully
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+      python meteo_into_postgres.py"
+
 volumes:
   vol_postgres_data:
     name: vol_postgres_data

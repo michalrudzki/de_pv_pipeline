@@ -3,7 +3,7 @@ from datetime import datetime
 
 # when Running from docker set host: "postgres18", and from local as "localhost"
 conn_params: dict[str, str | int] = {
-    "host": "localhost",
+    "host": "postgres18",
     "port": 5432,
     "dbname": "postgres",
     "user": "postgres",
@@ -19,6 +19,12 @@ def execute(sql,params={}):
     with connect() as connection:
         with connection.cursor() as cursor:
             cursor.execute(sql,params)
+
+def select_from_db(sql):
+    cursor = connect().cursor()
+    cursor.execute(sql)
+    postgreSQL_result = cursor.fetchall()
+    return [d[0].date() for d in postgreSQL_result]
 
 def bronze_to_silver(eff_date):
     '''
@@ -72,4 +78,11 @@ def bronze_to_silver(eff_date):
         '''
     execute(sql,locals())
 
-bronze_to_silver('2026-08-15')
+bronze_pv = select_from_db("select distinct eff_date from bronze_pv_production")
+silver_pv = select_from_db("select distinct eff_date from silver_pv_production")
+
+dates_to_load = {x.isoformat() for x in bronze_pv if x not in silver_pv}
+
+for eff_date in dates_to_load:
+    bronze_to_silver(eff_date)
+    
