@@ -80,7 +80,7 @@ eff_date TIMESTAMP
 );
 
 create table public.silver_meteo_forcast_hourly (
-forecast_date TIMESTAMP,
+eff_date TIMESTAMP,
 city VARCHAR(50),
 forecst_datetime TIMESTAMP,
 cloud_cover DECIMAL(10,2),
@@ -98,7 +98,7 @@ weather_code DECIMAL(10,2)
 );
 
 create table public.silver_meteo_forcast_daily (
-forecast_date TIMESTAMP,
+eff_date TIMESTAMP,
 city VARCHAR(50),
 forecst_datetime TIMESTAMP,
 sunrise INT,
